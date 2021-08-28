@@ -20,7 +20,6 @@
     "Titan": [
         {"parts": 4, "att": 50, "cha": 0, "int": 0, "dex": -10, "luck": 0, "statmult": 1.0, "xpmult": 0.9, "cpmult": 0.9},
         {"parts": 8, "att": 80, "cha": 0, "int": 0, "dex": -10, "luck": 0, "statmult": 1.0, "xpmult": 0.9, "cpmult": 1.2}
-
     ],
     "World Breaker": [
         {"parts": 4, "att": 3, "cha": 3, "int": 3, "dex": 3, "luck": -50, "statmult": 1.2, "xpmult": 0.5, "cpmult": 0.5},

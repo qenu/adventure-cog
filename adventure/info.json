@@ -3,7 +3,8 @@
 		"locastan",
 		"aikaterna",
 		"TrustyJAID",
-		"Draper"
+		"Draper",
+		"qenu"
 	],
 	"description": "An RPG for Discord.",
     "install_msg": "Thank you for installing the Adventure cog, based on the GoblinsComic Adventure Party cog by locastan. Use `[p]load adventure` to get started and check out `[p]help Adventure`.",

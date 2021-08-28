@@ -27,7 +27,9 @@ class LeaderboardSource(menus.ListPageSource):
         rebirth_len = len(humanize_number(entries[0][1]["rebirths"]))
         start_position = (menu.current_page * self.per_page) + 1
         pos_len = len(str(start_position + 9)) + 2
-        rebirth_len = (len("Rebirths") if len("Rebirths") > rebirth_len else rebirth_len) + 2
+        rebirth_len = (
+            len("Rebirths") if len("Rebirths") > rebirth_len else rebirth_len
+        ) + 2
         set_piece_len = len("Set Pieces") + 2
         level_len = len("Level") + 2
         header = (
@@ -103,7 +105,9 @@ class WeeklyScoreboardSource(menus.ListPageSource):
         start_position = (menu.current_page * self.per_page) + 1
         pos_len = len(str(start_position + 9)) + 2
         stats_plural = self._stat if self._stat.endswith("s") else f"{self._stat}s"
-        stats_len = (len(stats_plural) if len(stats_plural) > stats_len else stats_len) + 2
+        stats_len = (
+            len(stats_plural) if len(stats_plural) > stats_len else stats_len
+        ) + 2
         rebirth_len = len("Rebirths") + 2
         header = f"{'#':{pos_len}}{stats_plural.title().ljust(stats_len)}{'Rebirths':{rebirth_len}}{'Adventurer':2}"
         author = ctx.author
@@ -114,7 +118,9 @@ class WeeklyScoreboardSource(menus.ListPageSource):
             guild = None
 
         players = []
-        for (position, (user_id, account_data)) in enumerate(entries, start=start_position):
+        for (position, (user_id, account_data)) in enumerate(
+            entries, start=start_position
+        ):
             if guild is not None:
                 member = guild.get_member(user_id)
             else:
@@ -137,7 +143,12 @@ class WeeklyScoreboardSource(menus.ListPageSource):
             rebirths = humanize_number(account_data["rebirths"])
             stats_value = humanize_number(account_data[self._stat.lower()])
 
-            data = f"{f'{pos_str}.':{pos_len}}" f"{stats_value:{stats_len}}" f"{rebirths:{rebirth_len}}" f"{username}"
+            data = (
+                f"{f'{pos_str}.':{pos_len}}"
+                f"{stats_value:{stats_len}}"
+                f"{rebirths:{rebirth_len}}"
+                f"{username}"
+            )
             players.append(data)
 
         embed = discord.Embed(
@@ -179,7 +190,9 @@ class ScoreboardSource(WeeklyScoreboardSource):
         start_position = (menu.current_page * self.per_page) + 1
         pos_len = len(str(start_position + 9)) + 2
         stats_plural = self._stat if self._stat.endswith("s") else f"{self._stat}s"
-        stats_len = (len(stats_plural) if len(stats_plural) > stats_len else stats_len) + 2
+        stats_len = (
+            len(stats_plural) if len(stats_plural) > stats_len else stats_len
+        ) + 2
         rebirth_len = len("Rebirths") + 2
         header = f"{'#':{pos_len}}{stats_plural.title().ljust(stats_len)}{'Rebirths':{rebirth_len}}{'Adventurer':2}"
         author = ctx.author
@@ -190,7 +203,9 @@ class ScoreboardSource(WeeklyScoreboardSource):
             guild = None
 
         players = []
-        for (position, (user_id, account_data)) in enumerate(entries, start=start_position):
+        for (position, (user_id, account_data)) in enumerate(
+            entries, start=start_position
+        ):
             if guild is not None:
                 member = guild.get_member(user_id)
             else:
@@ -213,7 +228,12 @@ class ScoreboardSource(WeeklyScoreboardSource):
             rebirths = humanize_number(account_data["rebirths"])
             stats_value = humanize_number(account_data[self._stat.lower()])
 
-            data = f"{f'{pos_str}.':{pos_len}}" f"{stats_value:{stats_len}}" f"{rebirths:{rebirth_len}}" f"{username}"
+            data = (
+                f"{f'{pos_str}.':{pos_len}}"
+                f"{stats_value:{stats_len}}"
+                f"{rebirths:{rebirth_len}}"
+                f"{username}"
+            )
             players.append(data)
 
         embed = discord.Embed(
@@ -256,7 +276,9 @@ class NVScoreboardSource(WeeklyScoreboardSource):
             guild = None
 
         players = []
-        for (position, (user_id, account_data)) in enumerate(entries, start=start_position):
+        for (position, (user_id, account_data)) in enumerate(
+            entries, start=start_position
+        ):
             if guild is not None:
                 member = guild.get_member(user_id)
             else:
@@ -292,7 +314,9 @@ class NVScoreboardSource(WeeklyScoreboardSource):
             )
             players.append(data)
         msg = "Adventure Negaverse Scoreboard\n```md\n{}``` ```md\n{}``````md\n{}```".format(
-            header, "\n".join(players), f"Page {menu.current_page + 1}/{self.get_max_pages()}"
+            header,
+            "\n".join(players),
+            f"Page {menu.current_page + 1}/{self.get_max_pages()}",
         )
         return msg
 
@@ -318,13 +342,17 @@ class EconomySource(menus.ListPageSource):
     def is_paginating(self):
         return True
 
-    async def format_page(self, menu: menus.MenuPages, entries: List[Tuple[str, Dict[str, Any]]]) -> discord.Embed:
+    async def format_page(
+        self, menu: menus.MenuPages, entries: List[Tuple[str, Dict[str, Any]]]
+    ) -> discord.Embed:
         guild = menu.ctx.guild
         author = menu.ctx.author
         position = (menu.current_page * self.per_page) + 1
         bal_len = len(humanize_number(entries[0][1]["balance"]))
         pound_len = len(str(position + 9))
-        user_bal = await bank.get_balance(menu.ctx.author, _forced=not menu.ctx.cog._separate_economy)
+        user_bal = await bank.get_balance(
+            menu.ctx.author, _forced=not menu.ctx.cog._separate_economy
+        )
         if self.author_position is None:
             self.author_position = await bank.get_leaderboard_position(menu.ctx.author)
         header_primary = "{pound:{pound_len}}{score:{bal_len}}{name:2}\n".format(
@@ -487,7 +515,9 @@ class BaseMenu(menus.MenuPages, inherit_buttons=False):
         self._event.clear()
         msg = self.message
         if msg is None:
-            self.message = msg = await self.send_initial_message(ctx, channel, page=page)
+            self.message = msg = await self.send_initial_message(
+                ctx, channel, page=page
+            )
         if self.should_add_reactions():
             # Start the task first so we can listen to reactions before doing anything
             for task in self.__tasks:
@@ -508,7 +538,9 @@ class BaseMenu(menus.MenuPages, inherit_buttons=False):
             if wait:
                 await self._event.wait()
 
-    async def send_initial_message(self, ctx: commands.Context, channel: discord.abc.Messageable, page: int = 0):
+    async def send_initial_message(
+        self, ctx: commands.Context, channel: discord.abc.Messageable, page: int = 0
+    ):
         """
 
         The default implementation of :meth:`Menu.send_initial_message`
@@ -643,9 +675,12 @@ class ScoreBoardMenu(BaseMenu, inherit_buttons=False):
             return
         self._current = "wins"
         rebirth_sorted = await self.cog.get_global_scoreboard(
-            guild=self.ctx.guild if not self.show_global else None, keyword=self._current
+            guild=self.ctx.guild if not self.show_global else None,
+            keyword=self._current,
         )
-        await self.change_source(source=ScoreboardSource(entries=rebirth_sorted, stat=self._current))
+        await self.change_source(
+            source=ScoreboardSource(entries=rebirth_sorted, stat=self._current)
+        )
 
     @menus.button("\N{FIRE}")
     async def losses(self, payload: discord.RawReactionActionEvent) -> None:
@@ -653,9 +688,12 @@ class ScoreBoardMenu(BaseMenu, inherit_buttons=False):
             return
         self._current = "loses"
         rebirth_sorted = await self.cog.get_global_scoreboard(
-            guild=self.ctx.guild if not self.show_global else None, keyword=self._current
+            guild=self.ctx.guild if not self.show_global else None,
+            keyword=self._current,
         )
-        await self.change_source(source=ScoreboardSource(entries=rebirth_sorted, stat=self._current))
+        await self.change_source(
+            source=ScoreboardSource(entries=rebirth_sorted, stat=self._current)
+        )
 
     @menus.button("\N{DAGGER KNIFE}")
     async def physical(self, payload: discord.RawReactionActionEvent) -> None:
@@ -664,9 +702,12 @@ class ScoreBoardMenu(BaseMenu, inherit_buttons=False):
             return
         self._current = "fight"
         rebirth_sorted = await self.cog.get_global_scoreboard(
-            guild=self.ctx.guild if not self.show_global else None, keyword=self._current
+            guild=self.ctx.guild if not self.show_global else None,
+            keyword=self._current,
         )
-        await self.change_source(source=ScoreboardSource(entries=rebirth_sorted, stat=self._current))
+        await self.change_source(
+            source=ScoreboardSource(entries=rebirth_sorted, stat=self._current)
+        )
 
     @menus.button("\N{SPARKLES}")
     async def magic(self, payload: discord.RawReactionActionEvent) -> None:
@@ -674,9 +715,12 @@ class ScoreBoardMenu(BaseMenu, inherit_buttons=False):
             return
         self._current = "spell"
         rebirth_sorted = await self.cog.get_global_scoreboard(
-            guild=self.ctx.guild if not self.show_global else None, keyword=self._current
+            guild=self.ctx.guild if not self.show_global else None,
+            keyword=self._current,
         )
-        await self.change_source(source=ScoreboardSource(entries=rebirth_sorted, stat=self._current))
+        await self.change_source(
+            source=ScoreboardSource(entries=rebirth_sorted, stat=self._current)
+        )
 
     @menus.button("\N{LEFT SPEECH BUBBLE}")
     async def diplomacy(self, payload: discord.RawReactionActionEvent) -> None:
@@ -684,9 +728,12 @@ class ScoreBoardMenu(BaseMenu, inherit_buttons=False):
             return
         self._current = "talk"
         rebirth_sorted = await self.cog.get_global_scoreboard(
-            guild=self.ctx.guild if not self.show_global else None, keyword=self._current
+            guild=self.ctx.guild if not self.show_global else None,
+            keyword=self._current,
         )
-        await self.change_source(source=ScoreboardSource(entries=rebirth_sorted, stat=self._current))
+        await self.change_source(
+            source=ScoreboardSource(entries=rebirth_sorted, stat=self._current)
+        )
 
     @menus.button("\N{PERSON WITH FOLDED HANDS}")
     async def praying(self, payload: discord.RawReactionActionEvent) -> None:
@@ -694,9 +741,12 @@ class ScoreBoardMenu(BaseMenu, inherit_buttons=False):
             return
         self._current = "pray"
         rebirth_sorted = await self.cog.get_global_scoreboard(
-            guild=self.ctx.guild if not self.show_global else None, keyword=self._current
+            guild=self.ctx.guild if not self.show_global else None,
+            keyword=self._current,
         )
-        await self.change_source(source=ScoreboardSource(entries=rebirth_sorted, stat=self._current))
+        await self.change_source(
+            source=ScoreboardSource(entries=rebirth_sorted, stat=self._current)
+        )
 
     @menus.button("\N{RUNNER}")
     async def runner(self, payload: discord.RawReactionActionEvent) -> None:
@@ -704,9 +754,12 @@ class ScoreBoardMenu(BaseMenu, inherit_buttons=False):
             return
         self._current = "run"
         rebirth_sorted = await self.cog.get_global_scoreboard(
-            guild=self.ctx.guild if not self.show_global else None, keyword=self._current
+            guild=self.ctx.guild if not self.show_global else None,
+            keyword=self._current,
         )
-        await self.change_source(source=ScoreboardSource(entries=rebirth_sorted, stat=self._current))
+        await self.change_source(
+            source=ScoreboardSource(entries=rebirth_sorted, stat=self._current)
+        )
 
     @menus.button("\N{EXCLAMATION QUESTION MARK}")
     async def fumble(self, payload: discord.RawReactionActionEvent) -> None:
@@ -714,9 +767,12 @@ class ScoreBoardMenu(BaseMenu, inherit_buttons=False):
             return
         self._current = "fumbles"
         rebirth_sorted = await self.cog.get_global_scoreboard(
-            guild=self.ctx.guild if not self.show_global else None, keyword=self._current
+            guild=self.ctx.guild if not self.show_global else None,
+            keyword=self._current,
         )
-        await self.change_source(source=ScoreboardSource(entries=rebirth_sorted, stat=self._current))
+        await self.change_source(
+            source=ScoreboardSource(entries=rebirth_sorted, stat=self._current)
+        )
 
     @menus.button(
         "\N{BLACK LEFT-POINTING DOUBLE TRIANGLE WITH VERTICAL BAR}\N{VARIATION SELECTOR-16}",
@@ -803,7 +859,9 @@ class LeaderboardMenu(BaseMenu, inherit_buttons=False):
         if self._current == "leaderboard":
             return
         self._current = "leaderboard"
-        rebirth_sorted = await self.cog.get_leaderboard(guild=self.ctx.guild if not self.show_global else None)
+        rebirth_sorted = await self.cog.get_leaderboard(
+            guild=self.ctx.guild if not self.show_global else None
+        )
         await self.change_source(source=LeaderboardSource(entries=rebirth_sorted))
 
     @menus.button("\N{MONEY WITH WINGS}")
@@ -812,7 +870,8 @@ class LeaderboardMenu(BaseMenu, inherit_buttons=False):
             return
         self._current = "economy"
         bank_sorted = await bank.get_leaderboard(
-            guild=self.ctx.guild if not self.show_global else None, _forced=self._unified_bank()
+            guild=self.ctx.guild if not self.show_global else None,
+            _forced=self._unified_bank(),
         )
         await self.change_source(source=EconomySource(entries=bank_sorted))
 
